@@ -10,14 +10,14 @@ const TELEGRAM_CHAT_ID = "-1002299996850";
 app.post("/webhook", async (req, res) => {
   const { nome, email, valor } = req.body;
 
-  const msg = `\u{1F4B0} NOVA VENDA RECEBIDA\n\n\u{1F464} Nome: ${nome}\n\u{1F4E7} Email: ${email}\n\u{1F4B5} Valor: R$${valor}`;
+  const msg = `💰 <b>NOVA VENDA RECEBIDA</b>\n\n👤 Nome: ${nome}\n📧 Email: ${email}\n💵 Valor: R$${valor}`;
   const telegramURL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
 
   try {
     await axios.post(telegramURL, {
       chat_id: TELEGRAM_CHAT_ID,
       text: msg,
-      parse_mode: "Markdown"
+      parse_mode: "HTML"
     });
 
     res.send("Enviado com sucesso");
