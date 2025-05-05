@@ -7,7 +7,7 @@ app.use(express.json());
 const TELEGRAM_TOKEN = "7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s"; // teu token
 const TELEGRAM_CHAT_ID = "4723201428"; // teu chat_id
 
-app.post("/webhook", async (req, res) => {
+app.post("/", async (req, res) => {
   const { nome, email, valor } = req.body;
 
   const msg = `💰 NOVA VENDA RECEBIDA\n\n👤 Nome: ${nome}\n📧 Email: ${email}\n💵 Valor: R$${valor}`;
