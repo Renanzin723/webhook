@@ -1,47 +1,31 @@
-const express = require('express');
-const axios = require('axios');
+const express = require("express");
+const axios = require("axios");
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// SEUS DADOS
-const BOT_TOKEN = '7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s';
-const CHAT_ID = '1446913054';
+const TELEGRAM_TOKEN = "7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s"; // teu token
+const TELEGRAM_CHAT_ID = "1446913054"; // teu chat_id
 
-app.post('/webhook', async (req, res) => {
+app.post("/webhook", async (req, res) => {
   const { nome, email, valor } = req.body;
 
-  if (!nome || !email || !valor) {
-    return res.status(400).send('Campos obrigatórios faltando');
-  }
-
-  const msg = `
-🔥 NOVA VENDA 🔥
-👤 Nome: ${nome}
-📧 Email: ${email}
-💰 Valor: R$${valor}
-🕐 ${new Date().toLocaleString('pt-BR')}
-`;
+  const msg = `💰 NOVA VENDA RECEBIDA\n\n👤 Nome: ${nome}\n📧 Email: ${email}\n💵 Valor: R$${valor}`;
+  const telegramURL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
 
   try {
-    await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      chat_id: CHAT_ID,
+    await axios.post(telegramURL, {
+      chat_id: TELEGRAM_CHAT_ID,
       text: msg,
-      parse_mode: 'HTML',
+      parse_mode: "Markdown"
     });
 
-    res.send('Enviado pro Telegram com sucesso');
-  } catch (err) {
-    console.error('Erro ao enviar pro Telegram:', err.message);
-    res.status(500).send('Erro ao enviar mensagem pro Telegram');
+    res.send("Enviado com sucesso");
+  } catch (error) {
+    console.error("Erro ao enviar pro Telegram:", error.response?.data || error.message);
+    res.status(500).send("Erro ao enviar pro Telegram");
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('Webhook está rodando ✅');
-});
-
-app.listen(PORT, () => {
-  console.log(`🔥 Servidor rodando na porta ${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Webhook ON na porta ${PORT}`));
