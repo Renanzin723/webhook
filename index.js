@@ -17,7 +17,7 @@ Valor: R$ ${venda.valor || '???'}
 Produto: ${venda.produto || 'N/A'}`;
 
   try {
-    await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    await axios.post(`https://api.telegram.org/bot${7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s}/sendMessage`, {
       chat_id: TELEGRAM_CHAT_ID,
       text: mensagem,
     });
