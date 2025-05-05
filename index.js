@@ -1,33 +1,53 @@
-const express = require('express');
-const axios = require('axios');
+const express = require("express");
+const bodyParser = require("body-parser");
+const fetch = require("node-fetch");
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+// Teus dados do bot
+const TELEGRAM_TOKEN = "7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s";
+const TELEGRAM_CHAT_ID = "1446913054";
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+// Middleware
+app.use(bodyParser.json());
 
-app.post('/webhook', async (req, res) => {
-  const venda = req.body;
+// Rota principal
+app.post("/", async (req, res) => {
+  const { nome, email, valor, produto } = req.body;
 
-  const mensagem = `💸Caiu no Funil Pix caiu💸!
-Cliente: ${venda.nome || 'Desconhecido'}
-E-mail: ${venda.email || 'N/A'}
-Valor: R$ ${venda.valor || '???'}
-Produto: ${venda.produto || 'N/A'}`;
+  if (!nome || !email || !valor || !produto) {
+    return res.status(400).json({ erro: "Faltando dados" });
+  }
+
+  const mensagem = `
+📦 NOVA VENDA CONFIRMADA
+
+👤 Nome: ${nome}
+📧 Email: ${email}
+💸 Valor: R$${valor}
+📦 Produto: ${produto}
+🕒 Horário: ${new Date().toLocaleString("pt-BR")}
+`;
 
   try {
-    await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      chat_id: TELEGRAM_CHAT_ID,
-      text: mensagem,
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: mensagem,
+        parse_mode: "Markdown"
+      })
     });
-    res.status(200).send('Enviado');
+
+    res.status(200).json({ sucesso: true, msg: "Mensagem enviada pro Telegram" });
   } catch (err) {
-    console.error(err.response.data);
-    res.status(500).send('Erro ao enviar pro Telegram');
+    console.error("Erro ao enviar pro Telegram:", err);
+    res.status(500).json({ erro: "Falha ao enviar para o Telegram" });
   }
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Webhook rodando na porta 3000');
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porra da porta ${PORT}`);
 });
