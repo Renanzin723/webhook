@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 const TELEGRAM_TOKEN = "7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s"; // teu token
-const TELEGRAM_CHAT_ID = "1446913054"; // teu chat_id
+const TELEGRAM_CHAT_ID = "4723201428"; // teu chat_id
 
 app.post("/webhook", async (req, res) => {
   const { nome, email, valor } = req.body;
