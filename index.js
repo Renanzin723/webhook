@@ -10,14 +10,14 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 app.post('/webhook', async (req, res) => {
   const venda = req.body;
 
-  const mensagem = `💸Caiu no Funil é PIX💸!
+  const mensagem = `💸Caiu no Funil Pix caiu💸!
 Cliente: ${venda.nome || 'Desconhecido'}
 E-mail: ${venda.email || 'N/A'}
 Valor: R$ ${venda.valor || '???'}
 Produto: ${venda.produto || 'N/A'}`;
 
   try {
-    await axios.post(`https://api.telegram.org/bot${7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s}/sendMessage`, {
+    await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       chat_id: TELEGRAM_CHAT_ID,
       text: mensagem,
     });
