@@ -17,7 +17,7 @@ app.post("/webhook", async (req, res) => {
   }
 
   const msg = `
-<b>💰 NOVA VENDA RECEBIDA</b>\n
+<b>💰 Caiu No Funil é PIX</b>\n
 👤 <b>Nome:</b> ${nome}
 📧 <b>Email:</b> ${email}
 💵 <b>Valor:</b> R$${valor}
