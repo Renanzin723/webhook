@@ -4,13 +4,13 @@ const app = express();
 
 app.use(express.json());
 
-const TELEGRAM_TOKEN = "7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s"; // teu token
-const TELEGRAM_CHAT_ID = "4723201428"; // teu chat_id
+const TELEGRAM_TOKEN = "7647879120:AAGWbTguXvlSjcNnfiWWODSRdg9sY3hvo5s";
+const TELEGRAM_CHAT_ID = "4723201428";
 
 app.post("/webhook", async (req, res) => {
   const { nome, email, valor } = req.body;
 
-  const msg = `💰 NOVA VENDA RECEBIDA\n\n👤 Nome: ${nome}\n📧 Email: ${email}\n💵 Valor: R$${valor}`;
+  const msg = `\u{1F4B0} NOVA VENDA RECEBIDA\n\n\u{1F464} Nome: ${nome}\n\u{1F4E7} Email: ${email}\n\u{1F4B5} Valor: R$${valor}`;
   const telegramURL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
 
   try {
